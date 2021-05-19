@@ -4,7 +4,7 @@ import TrRow from "./components/TrRow";
 
 function App() {
 
-    const [ids, setIds] = React.useState([0,1,2]);
+    const [ids, setIds] = React.useState([10,15,72,84,93]);
 
     const allowDrop = (ev) => {
         console.log(`allowDrop ${ev.target.id}`);
@@ -18,16 +18,17 @@ function App() {
 
     const drop = (ev, droppedToId) => {
         ev.preventDefault();
-        let draggedFromId = ev.dataTransfer.getData("draggedFromId");
+        let draggedFromId = parseInt(ev.dataTransfer.getData("draggedFromId"));
         console.log(`drop: draggedFromId = ${draggedFromId}, drop droppedToId = ${droppedToId}`);
 
-        let curIds = [...ids];
-        // let tmp = droppedToId;
-        let droppedToIdIndex = curIds.findIndex( id => id === droppedToId )
-        let draggedFromIdIndex = curIds.findIndex( id => id === draggedFromId )
-        curIds[droppedToIdIndex] = draggedFromId;
-        curIds[draggedFromIdIndex] = droppedToId;
-        setIds(curIds);
+        setIds(ids => {
+            let curIds = [...ids];
+            let droppedToIdIndex = curIds.findIndex( id => id === droppedToId )
+            let draggedFromIdIndex = curIds.findIndex( id => id === draggedFromId )
+            curIds[droppedToIdIndex] = draggedFromId;
+            curIds[draggedFromIdIndex] = droppedToId;
+            return curIds;
+        });
     }
 
     return (

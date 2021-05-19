@@ -4,13 +4,13 @@ function TrRow(props) {
 
   return (
       <div id={`div-${props.id}`} className="table-responsive-sm"
-           onDrop={(ev) => props.drop(ev,props.id)}
+           onDrop={(ev) => props.drop(ev,parseInt(props.id))}
            onDragOver={props.allowDrop}
       >
         <table className="table"
                id={`drag-${props.id}`}
                draggable="true"
-               onDragStart={(ev) =>props.drag(ev,props.id)}
+               onDragStart={(ev) =>props.drag(ev,parseInt(props.id))}
         >
           <tbody>
           <tr>
