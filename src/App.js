@@ -23,11 +23,31 @@ function App() {
 
         setIds(ids => {
             let curIds = [...ids];
-            let droppedToIdIndex = curIds.findIndex( id => id === droppedToId )
-            let draggedFromIdIndex = curIds.findIndex( id => id === draggedFromId )
-            curIds[droppedToIdIndex] = draggedFromId;
-            curIds[draggedFromIdIndex] = droppedToId;
-            return curIds;
+            let draggedFromIdIndex = curIds.findIndex( id => id === draggedFromId );
+            let droppedToIdIndex = curIds.findIndex( id => id === droppedToId );
+
+            let withoutDragged,lowSlice, highSlice, updatedIds;
+
+            if (draggedFromIdIndex === droppedToIdIndex) {
+                updatedIds = curIds;
+            }
+            else if (draggedFromIdIndex < droppedToIdIndex) {
+                lowSlice = curIds.slice(0,droppedToIdIndex + 1);
+                withoutDragged = lowSlice.filter((id, index) => {
+                    return id !== draggedFromId;
+                });
+                highSlice = curIds.slice(droppedToIdIndex+1);
+                updatedIds = [...withoutDragged, draggedFromId, ...highSlice];
+            }
+            else if (draggedFromIdIndex > droppedToIdIndex) {
+                lowSlice = curIds.slice(0,droppedToIdIndex );
+                highSlice = curIds.slice(droppedToIdIndex);
+                withoutDragged = highSlice.filter((id, index) => {
+                    return id !== draggedFromId;
+                });
+                updatedIds = [...lowSlice, draggedFromId, ...withoutDragged];
+            }
+            return updatedIds;
         });
     }
 
