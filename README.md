@@ -1,3 +1,10 @@
+master branch contains original exam.
+
+home-sol branch contains a home solution a day after.
+
+A home solution uses Redux to manage state.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
