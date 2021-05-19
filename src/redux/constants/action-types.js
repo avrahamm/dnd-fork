@@ -1,0 +1,1 @@
+export const DND_ROW = 'DND_ROW';

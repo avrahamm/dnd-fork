@@ -1,10 +1,13 @@
 import React from "react";
+import {useSelector, useDispatch } from "react-redux";
+
 import HeaderRow from "./components/HeaderRow";
 import TrRow from "./components/TrRow";
+import * as actions from "./redux/actions";
 
 function App() {
-
-    const [ids, setIds] = React.useState([10,15,72,84,93]);
+    const ids = useSelector( state => state.rows.ids);
+    const dispatch = useDispatch();
 
     const allowDrop = (ev) => {
         console.log(`allowDrop ${ev.target.id}`);
@@ -16,39 +19,11 @@ function App() {
         ev.dataTransfer.setData("draggedFromId", draggedFromId);
     }
 
-    const drop = (ev, droppedToId) => {
+    const drop = (ev, droppedToRowId) => {
         ev.preventDefault();
-        let draggedFromId = parseInt(ev.dataTransfer.getData("draggedFromId"));
-        console.log(`drop: draggedFromId = ${draggedFromId}, drop droppedToId = ${droppedToId}`);
-
-        setIds(ids => {
-            let curIds = [...ids];
-            let draggedFromIdIndex = curIds.findIndex( id => id === draggedFromId );
-            let droppedToIdIndex = curIds.findIndex( id => id === droppedToId );
-
-            let withoutDragged,lowSlice, highSlice, updatedIds;
-
-            if (draggedFromIdIndex === droppedToIdIndex) {
-                updatedIds = curIds;
-            }
-            else if (draggedFromIdIndex < droppedToIdIndex) {
-                lowSlice = curIds.slice(0,droppedToIdIndex + 1);
-                withoutDragged = lowSlice.filter((id, index) => {
-                    return id !== draggedFromId;
-                });
-                highSlice = curIds.slice(droppedToIdIndex+1);
-                updatedIds = [...withoutDragged, draggedFromId, ...highSlice];
-            }
-            else if (draggedFromIdIndex > droppedToIdIndex) {
-                lowSlice = curIds.slice(0,droppedToIdIndex );
-                highSlice = curIds.slice(droppedToIdIndex);
-                withoutDragged = highSlice.filter((id, index) => {
-                    return id !== draggedFromId;
-                });
-                updatedIds = [...lowSlice, draggedFromId, ...withoutDragged];
-            }
-            return updatedIds;
-        });
+        let draggedFromRowId = parseInt(ev.dataTransfer.getData("draggedFromId"));
+        console.log(`drop: draggedFromId = ${draggedFromRowId}, drop droppedToId = ${droppedToRowId}`);
+        dispatch(actions.dndRow(draggedFromRowId,droppedToRowId))
     }
 
     return (
